@@ -19,13 +19,13 @@ require("./config/db");
 
 app.use("/api", IndexRoutes);
 app.get("/", (req, res) => {
-  const rootDir = path.join(__dirname, ".");
-  const folderPath = path.join(rootDir, "uploads");
+  // const rootDir = path.join(__dirname, ".");
+  // const folderPath = path.join(rootDir, "uploads");
 
-  // Check if the folder exists
-  if (!fs.existsSync(folderPath)) {
-    fs.mkdirSync(folderPath);
-  }
+  // // Check if the folder exists
+  // if (!fs.existsSync(folderPath)) {
+  //   fs.mkdirSync(folderPath);
+  // }
 
   res.send("<h1>Hello There</h1>");
 });
