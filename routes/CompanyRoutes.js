@@ -1,6 +1,7 @@
 const express = require("express");
 const CompanyController = require("../controllers/CompanyController");
 const { upload } = require("../middlewares/MulterMiddleware");
+const authenticate = require("../middlewares/AuthMiddleware");
 const router = express.Router();
 
 router.post(
@@ -8,10 +9,25 @@ router.post(
   upload.fields([{ name: "licensePdf" }, { name: "vacPdf" }]),
   CompanyController.RegisterCompany
 );
-router.get("/getCompanies", CompanyController.GetCompanies);
-router.get("/getCompanies/:id", CompanyController.GetOneCompany);
-// router.post("/verifyAuth", AuthController.verifyAuth);
-// router.post("/logout", AuthController.Logout);
+router.get(
+  "/getCompanies",
+  authenticate([2]), //Admin Can Access
+  CompanyController.GetCompanies
+);
+router.get(
+  "/getOthersCompanies/:id",
+  authenticate([1]), // Company Can Access
+  CompanyController.GetOthersCompanies
+);
+router.get(
+  "/getCompanies/:id",
+  authenticate([1, 2]), // Company & Admin Can Access
+  CompanyController.GetOneCompany
+);
+router.get(
+  "/getAllProjects/:companyId",
+  authenticate([1, 2]), // Company & Admin Can Access
+  CompanyController.GetAllProjects
+);
 
-// router.get("/google", AuthController.googleGetAuth);
 module.exports = router;

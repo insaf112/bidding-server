@@ -18,16 +18,6 @@ const companyRequestSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Friendship.find({ user: userId, status: 'pending' })
-//   .populate('sender') // Populate the sender field to get details about the senders of the friend requests
-//   .exec((err, friendRequests) => {
-//     if (err) {
-//       // Handle error
-//     } else {
-//       // Process the list of pending friend requests
-//       console.log(friendRequests);
-//     }
-//   });
 const CompanyStatusModel = mongoose.model(
   "CompanyStatus",
   companyRequestSchema

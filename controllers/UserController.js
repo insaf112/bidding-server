@@ -10,7 +10,11 @@ class UserController {
     console.log("Send Request", req.body, id);
     try {
       // Here we will also fetch the USER data(name etc) for every recieved request from the User model too
-      const pendingRequests = await FriendshipModel.find({ reciever: id });
+      const pendingRequests = await FriendshipModel.find({
+        reciever: id,
+        status: 0,
+      }).populate("sender");
+      console.log("Send Request", pendingRequests, id);
       res.status(200).json({
         success: true,
         data: {
@@ -41,18 +45,18 @@ class UserController {
   };
   ApproveFriendRequest = async (req, res) => {
     console.log("Approve Friend Request", req.body);
-    const { sender, reciever } = req.body;
+    const { id } = req.body;
     try {
-      await FriendshipModel.updateOne(
-        { sender: sender, reciever: reciever },
+      const accepted = await FriendshipModel.findOneAndUpdate(
+        { _id: id },
         { status: 1 }
       );
-      console.log("APPROVEDDDD : ");
+      console.log("APPROVEDDDD : ", accepted);
       res.status(200).json({
         success: true,
         data: {
           message: "Friend Request Accepted",
-          data: null,
+          data: accepted,
         },
       });
     } catch (error) {
@@ -64,9 +68,9 @@ class UserController {
   };
   DenyFriendRequest = async (req, res) => {
     console.log("Register Company", req.body);
-    const { sender, reciever } = req.body;
+    const { id } = req.body;
     try {
-      await FriendshipModel.deleteOne({ sender: sender, reciever: reciever });
+      await FriendshipModel.deleteOne({ _id: id });
       console.log("DENIEDDDDDDD :");
       res.status(200).json({
         success: true,

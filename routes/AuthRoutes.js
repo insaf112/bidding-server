@@ -4,6 +4,8 @@ const router = express.Router();
 
 router.post("/register", AuthController.Register);
 router.post("/login", AuthController.Login);
+router.post("/loginAdmin", AuthController.LoginAdmin);
+router.post("/verifyAuth", AuthController.VerifyAuth);
 // router.post("/verifyAuth", AuthController.verifyAuth);
 // router.post("/logout", AuthController.Logout);
 

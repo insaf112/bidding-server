@@ -1,13 +1,32 @@
+const FileModel = require("../models/FileModel");
 const ProjectModel = require("../models/ProjectModel");
 
 class ProjectController {
   PostProject = async (req, res) => {
-    console.log("Project", req.body);
+    console.log("PROJECTTTTTTT : ", req.body);
+    const { userId } = req.body;
+    req.files = req.files.map((file) => ({
+      ...file,
+      userId,
+    }));
+
+    console.log("FILESSSSSSSSS : ", req.files);
     try {
-      await ProjectModel.create({ ...req.body });
+      const resFiles = await FileModel.insertMany(req.files, {
+        rawResult: true,
+      });
+      const insertedIdsArray = Object.values(resFiles.insertedIds).map((id) =>
+        id.toString()
+      );
+      const project = await ProjectModel.create({
+        ...req.body,
+        files: insertedIdsArray,
+      });
+      console.log("FILESSSSSSSSS : ", project, insertedIdsArray);
+
       res.status(201).json({
         success: true,
-        data: { message: "Project Posted Successfully", data: null },
+        data: { message: "Project Posted Successfully", data: project },
       });
     } catch (error) {
       console.log("Error : ", error);

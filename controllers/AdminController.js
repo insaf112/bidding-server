@@ -121,6 +121,24 @@ class CompanyController {
       res.status(400).json({ success: false, error: "Error Fetching Users" });
     }
   };
+  GetAllCompanies = async (req, res) => {
+    console.log("All Company", req.body);
+    try {
+      const allCompanies = await CompanyModel.find({ status: 1 });
+      res.status(201).json({
+        success: true,
+        data: {
+          message: "Companies Fetched Successfully",
+          data: allCompanies,
+        },
+      });
+    } catch (error) {
+      console.log("Error : ", error);
+      res
+        .status(400)
+        .json({ success: false, error: "Error Fetching Companies" });
+    }
+  };
 }
 
 module.exports = new CompanyController();
