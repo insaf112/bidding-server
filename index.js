@@ -30,6 +30,10 @@ app.get("/", (req, res) => {
   res.send("<h1>Hello There</h1>");
 });
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
+
 const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Server is listening at localhost ${port}....`);
